@@ -24,7 +24,9 @@ exports.post_detail_post = [
     .trim()
     .isLength({ min: 1, max: 60000 })
     .withMessage("Comment must be 1-60000 characters long")
-    .escape(),
+    .isString()
+    .withMessage("Comment must be a string"),
+
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
     if (!req.user || !req.user._id) {
