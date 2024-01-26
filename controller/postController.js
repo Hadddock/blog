@@ -28,9 +28,11 @@ exports.post_detail_post = [
     .escape(),
   asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
-    if (req.params.id && req.user) {
-      const post = await Post.findOne({ _id: req.params.id }).exec();
-
+    if (!req.user || !req.user._id) {
+      res.sendStatus(401);
+      return;
+    }
+    if (req.params.id) {
       const comment = new Comment({
         message: req.body.message,
         post: req.params.id,
